@@ -2,7 +2,7 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('/', ArticleListAPIView.as_view()),
+    path('', ArticleListAPIView.as_view()),
     path('create/', ArticleListCreateAPIView.as_view()),
     path('crud/<int:pk>/', ArticleRetrieveUpdateDestroyAPIView.as_view()),
 
@@ -13,5 +13,7 @@ urlpatterns = [
     path('tag/', TagListAPIView.as_view()),
     path('tag/create/', TagCreateAPIView.as_view()),
     path('tag/<int:pk>/', TagCRUDAPIView.as_view()),
+
+    path('image/', ImageListAPIView.as_view())
 ]
 

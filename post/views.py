@@ -14,7 +14,7 @@ class ArticleListAPIView(generics.ListAPIView):
 class ArticleListCreateAPIView(generics.ListCreateAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         return serializer.save(owner=self.request.user)
@@ -23,7 +23,7 @@ class ArticleListCreateAPIView(generics.ListCreateAPIView):
 class ArticleRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-    # permission_classes = [IsOwner]
+    permission_classes = [IsOwner]
 
 
 class CategoryListAPIView(generics.ListAPIView):
@@ -34,7 +34,7 @@ class CategoryListAPIView(generics.ListAPIView):
 class CategoryCreateAPIView(generics.CreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    # permission_class = [IsAdminUser]
+    permission_class = [IsAdminUser]
 
 
 class CategoryCRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -45,7 +45,7 @@ class CategoryCRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 class TagListAPIView(generics.ListAPIView):
     queryset = Tag.objects.all()
-    serializer_class =TagSerializer
+    serializer_class = TagSerializer
 
 
 class TagCreateAPIView(generics.CreateAPIView):
@@ -57,4 +57,21 @@ class TagCreateAPIView(generics.CreateAPIView):
 class TagCRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class ImageListAPIView(generics.ListAPIView):
+    queryset = ArticleImage.objects.all()
+    serializer_class = ArticleImageSerializer
+
+
+class ImageCreateAPIView(generics.CreateAPIView):
+    queryset = ArticleImage.objects.all()
+    serializer_class = ArticleImageSerializer
+    permission_class = [IsAuthenticated]
+
+
+class ImageCRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ArticleImage.objects.all()
+    serializer_class = ArticleImageSerializer
     permission_classes = [IsAuthenticated]
