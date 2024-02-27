@@ -1,9 +1,19 @@
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from rest_framework import filters
+from rest_framework import generics
 from .serializers import *
 from rest_framework.response import Response
 from .models import CustomUser
+
+
+class UserListAPIVew(generics.ListAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = UsersSerializers
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['email', 'first_name', 'last_name']
+
 
 class RegisterView(APIView):
     def post(self, request, *args, **kwargs):
@@ -13,6 +23,7 @@ class RegisterView(APIView):
             return Response('вам на почту отправлено письмо. продите по нему чтобы актевировать аккаунт', status=200)
         else:
             return Response(serializer.errors, status=400)
+
 
 class ActivationView(APIView):
     def get(self, request, activation_code):
@@ -24,6 +35,7 @@ class ActivationView(APIView):
             return Response('Успешно', status=200)
         except CustomUser.DoesNotExist:
             return Response('Link expired', status=400)
+
 
 class ForgotPasswordAPIView(APIView):
     def post(self, request):
@@ -40,6 +52,7 @@ class ForgotPasswordCompleteAPIView(APIView):
         serializer.set_new_password()
         return Response('пароль успешно изменён')
 
+
 class UserDetailView(RetrieveAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
@@ -47,6 +60,7 @@ class UserDetailView(RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
 
 class UserUpdateAPIView(APIView):
     permission_classes = [IsAuthenticated]

@@ -40,3 +40,14 @@ class ArticleImage(models.Model):
 
     def __str__(self):
         return f'{str(self.image)}     -->    {self.article}'
+
+
+class Comment(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    text = models.TextField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_up = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f'{self.owner} ---> {self.article.title}'

@@ -14,6 +14,10 @@ urlpatterns = [
     path('tag/create/', TagCreateAPIView.as_view()),
     path('tag/<int:pk>/', TagCRUDAPIView.as_view()),
 
-    path('image/', ImageListAPIView.as_view())
+    path('image/', ImageListAPIView.as_view()),
+
+    path('comment/', CommentListAPIView.as_view()),
+    path('comment/create/', CommentCreateAPIView.as_view()),
+    path('comment/<int:pk>/', CommentCRUDAPIView.as_view())
 ]
 

@@ -3,6 +3,12 @@ from .send_email import send_activation_code, send_reset_password_code
 from .models import *
 
 
+class UsersSerializers(serializers.ModelSerializer):
+
+    class Meta:
+        model = CustomUser
+        fields = ['email', 'first_name', 'last_name', 'avatar']
+
 class BaseCustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser

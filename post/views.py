@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework import filters
 from .models import *
 from .serializers import *
 from .permitions import IsOwner
@@ -9,7 +10,8 @@ from .permitions import IsOwner
 class ArticleListAPIView(generics.ListAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title']
 
 class ArticleListCreateAPIView(generics.ListCreateAPIView):
     queryset = Article.objects.all()
@@ -63,15 +65,35 @@ class TagCRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
 class ImageListAPIView(generics.ListAPIView):
     queryset = ArticleImage.objects.all()
     serializer_class = ArticleImageSerializer
+#
+#
+# class ImageCreateAPIView(generics.CreateAPIView):
+#     queryset = ArticleImage.objects.all()
+#     serializer_class = ArticleImageSerializer
+#     permission_class = [IsAuthenticated]
+#
+#
+# class ImageCRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = ArticleImage.objects.all()
+#     serializer_class = ArticleImageSerializer
+#     permission_classes = [IsAuthenticated]
 
 
-class ImageCreateAPIView(generics.CreateAPIView):
-    queryset = ArticleImage.objects.all()
-    serializer_class = ArticleImageSerializer
+class CommentListAPIView(generics.ListAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+
+class CommentCreateAPIView(generics.CreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
     permission_class = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+        return serializer.save(owner=self.request.user)
 
-class ImageCRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ArticleImage.objects.all()
-    serializer_class = ArticleImageSerializer
-    permission_classes = [IsAuthenticated]
+
+class CommentCRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsOwner]
